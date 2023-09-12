@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To do List</title>
+  </head>
+  <body>
+    <h3>Todo List Today</h3>
+    <input type="text" required class="list-js" placeholder="what to do" />
+    <input type="date" class="due-date-js" />
+    <button onclick="addTodo()" class="add-js">Add</button>
+    <button onclick="remove()">Remove all items</button>
+    <div class="main-js"></div>
+  </body>
+  <script>
+    function remove() {
+      todoList = [];
+      localStorage.clear();
+      renderList();
+    }
+    let todoList = JSON.parse(localStorage.getItem("work")) || [];
+
+    if (!todoList) {
+      todoList = [];
+    }
+    console.log("my list: ", todoList);
+    renderList();
+
+    function addTodo() {
+      let name = document.querySelector(".list-js").value;
+      let dueDate = document.querySelector(".due-date-js").value;
+      let todoObj = {
+        name,
+        dueDate,
+      };
+      todoList.push(todoObj);
+      renderList();
+    }
+
+    function renderList() {
+      let total = "";
+      todoList.forEach((todoList, i) => {
+        const { name, dueDate } = todoList;
+        total += ` <p>Name: ${name} Date:${dueDate}
+                <button onclick="
+                todoList.splice(${i},1)
+                renderList();
+                " >Delete</button>
+                </p>
+            `;
+      });
+      document.querySelector(".main-js").innerHTML = total;
+      localStorage.setItem("work", JSON.stringify(todoList));
+    }
+  </script>
+</html>
